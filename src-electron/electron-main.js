@@ -19,6 +19,14 @@ function createWindow () {
     useContentSize: true,
     webPreferences: {
       contextIsolation: true,
+      // nodeIntegration: true,
+      // nodeIntegrationInSubFrames: true,
+      // nodeIntegrationInWorker: true,
+      // sandbox: false,
+      // nativeWindowOpen: true,
+      // enableRemoteModule: true,
+      // webviewTag: true,
+      // devTools: true,
       // More info: /quasar-cli/developing-electron-apps/electron-preload-script
       preload: path.resolve(__dirname, process.env.QUASAR_ELECTRON_PRELOAD)
     }
