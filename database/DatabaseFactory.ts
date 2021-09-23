@@ -10,7 +10,7 @@ export abstract class DatabaseFactory {
   private static instance: RxDatabase<DatabaseCollections> | null = null;
 
   private static async createDatabase() {
-    if (!DatabaseFactory.instance) {
+    if (DatabaseFactory.instance === null) {
       const storage = await getDatabaseStorage();
       const location = await getDatabaseLocation();
       DatabaseFactory.instance = await createRxDatabase<DatabaseCollections>({

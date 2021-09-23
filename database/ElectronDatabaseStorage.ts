@@ -12,6 +12,5 @@ export async function electronDatabaseStorage() {
 export async function electronDatabaseLocationPath() {
   const os = require('os')
   const homeDir = os.homedir() as string
-  console.log(os.homedir())
   return Promise.resolve(homeDir + '/db/' + config.databaseDirName)
 }
