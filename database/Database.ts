@@ -6,24 +6,6 @@ declare global {
   interface Window { db: { getDatabase: () => Promise<RxDatabase<DatabaseCollections>> }  }
 }
 
-class Database {
-  private static instance: Database|null = null;
-
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  private constructor() {}
-
-  public static init(): Database {
-    if (!Database.instance) {
-      Database.instance = new Database();
-    }
-
-    return Database.instance
-  }
-  async get() {
-    console.log('before window.db.getDatabase')
-    return window.db.getDatabase()
-    console.log('after window.db.getDatabase')
-  }
+export function getDatabase() {
+  return window.db.getDatabase()
 }
-
-export const database = Database.init()

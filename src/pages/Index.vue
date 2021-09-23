@@ -6,13 +6,13 @@
 
 <script lang='ts'>
 import { defineComponent } from 'vue';
-import { database } from 'app/database/Database';
+import { getDatabase } from 'app/database/Database';
 
 export default defineComponent({
   name: 'PageIndex',
   setup() {
     const databaseStart = async () => {
-      const db = await database.get();
+      const db = await getDatabase()
       void await db.users.insert({
         email: 'test@test.pl',
         password: 'some password',
