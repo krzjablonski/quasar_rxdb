@@ -5,22 +5,16 @@
 </template>
 
 <script lang='ts'>
+
 import { defineComponent } from 'vue';
 import { getDatabase } from 'app/database/Database';
 
 export default defineComponent({
   name: 'PageIndex',
   setup() {
-    const databaseStart = async () => {
-      const db = await getDatabase()
-      void await db.users.insert({
-        email: 'test@test.pl',
-        password: 'some password',
-        roles: ['some role'],
-        username: 'test username'
-      })
-      const users = await db.users.countAll()
-      console.log(users)
+    const databaseStart = () => {
+      const db = getDatabase()
+      console.log(db)
     };
 
     return { databaseStart };

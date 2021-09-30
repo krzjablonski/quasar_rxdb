@@ -7,8 +7,9 @@
 // https://v2.quasar.dev/quasar-cli/quasar-conf-js
 
 /* eslint-env node */
-/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable @typescript-eslint/no-var-requires,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access */
 const { configure } = require('quasar/wrappers');
+const nodePolyfillWebpackPlugin = require('node-polyfill-webpack-plugin');
 
 module.exports = configure(function(ctx) {
   return {
@@ -53,6 +54,7 @@ module.exports = configure(function(ctx) {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
+      scopeHoisting: true,
       vueRouterMode: 'hash', // available values: 'hash', 'history'
 
       // transpile: false,
@@ -73,8 +75,9 @@ module.exports = configure(function(ctx) {
 
       // https://v2.quasar.dev/quasar-cli/handling-webpack
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
-      chainWebpack(/* chain */) {
-        //
+      chainWebpack(chain) {
+        const nodePolyfillWebpackPlugin = require('node-polyfill-webpack-plugin')
+        chain.plugin('node-polyfill').use(nodePolyfillWebpackPlugin)
       }
     },
 
@@ -214,17 +217,12 @@ module.exports = configure(function(ctx) {
         artifactName: 'quasar_rxdb-${version}.${ext}',
         compression: 'store',
         asar: true,
-        target: 'nsis',
-        node: {
-          fs: 'empty'
-        }
+        target: 'nsis'
       },
 
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
-      chainWebpack(/* chain */) {
-        // do something with the Electron main process Webpack cfg
-        // extendWebpackMain also available besides this chainWebpackMain
-      },
+      // chainWebpack(chain) {
+      // },
 
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
       chainWebpackPreload(/* chain */) {

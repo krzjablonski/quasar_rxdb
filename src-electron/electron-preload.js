@@ -17,10 +17,5 @@
  */
 
 import { contextBridge } from 'electron';
-import { DatabaseFactory } from '../database/DatabaseFactory';
 
-contextBridge.exposeInMainWorld('db', {
-  getDatabase: async () => {
-    return await DatabaseFactory.init()
-  }
-});
+contextBridge.exposeInMainWorld('db', () => global.db)

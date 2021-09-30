@@ -7,6 +7,8 @@ export async function electronDatabaseStorage() {
   addPouchPlugin(require('pouchdb-adapter-leveldb')); // leveldown adapters need the leveldb plugin to work
   const leveldown = require('leveldown');
   return getRxStoragePouch(leveldown)
+  // addPouchPlugin(require('pouchdb-adapter-idb'));
+  // return getRxStoragePouch('idb')
 }
 
 export async function electronDatabaseLocationPath() {

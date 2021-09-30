@@ -1,5 +1,6 @@
-import { app, BrowserWindow, nativeTheme } from 'electron'
+import { app, BrowserWindow, nativeTheme, ipcRenderer } from 'electron'
 import path from 'path'
+import { DatabaseFactory } from '../database/DatabaseFactory';
 
 try {
   if (process.platform === 'win32' && nativeTheme.shouldUseDarkColors === true) {
@@ -18,17 +19,17 @@ function createWindow () {
     height: 600,
     useContentSize: true,
     webPreferences: {
-      contextIsolation: true,
-      // nodeIntegration: true,
-      // nodeIntegrationInSubFrames: true,
-      // nodeIntegrationInWorker: true,
-      // sandbox: false,
-      // nativeWindowOpen: true,
-      // enableRemoteModule: true,
-      // webviewTag: true,
-      // devTools: true,
+      contextIsolation: false,
+      sandbox: false,
+      nodeIntegration: true,
+      nodeIntegrationInSubFrames: true,
+      nodeIntegrationInWorker: true,
+      nativeWindowOpen: true,
+      enableRemoteModule: true,
+      webviewTag: true,
+      devTools: true,
       // More info: /quasar-cli/developing-electron-apps/electron-preload-script
-      preload: path.resolve(__dirname, process.env.QUASAR_ELECTRON_PRELOAD)
+      // preload: path.resolve(__dirname, process.env.QUASAR_ELECTRON_PRELOAD)
     }
   })
 
@@ -49,7 +50,14 @@ function createWindow () {
   })
 }
 
-app.on('ready', createWindow)
+app.on('ready',  () => {
+  void DatabaseFactory.init()
+    .then(db => {
+      global.db = db
+      createWindow()
+    })
+})
+
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -59,6 +67,6 @@ app.on('window-all-closed', () => {
 
 app.on('activate', () => {
   if (mainWindow === null) {
-    createWindow()
+    void createWindow()
   }
 })

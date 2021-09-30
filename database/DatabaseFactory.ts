@@ -10,30 +10,28 @@ export abstract class DatabaseFactory {
   private static instance: RxDatabase<DatabaseCollections> | null = null;
 
   private static async createDatabase() {
-    if (DatabaseFactory.instance === null) {
-      const storage = await getDatabaseStorage();
-      const location = await getDatabaseLocation();
-      DatabaseFactory.instance = await createRxDatabase<DatabaseCollections>({
-        name: location,
-        storage: storage,
-      });
-      void await DatabaseFactory.instance.addCollections(
-        {
-          users: {
-            schema: userSchema,
-            methods: userMethods,
-            statics: userCollectionMethods
-          }
+    const storage = await getDatabaseStorage();
+    const location = await getDatabaseLocation();
+    DatabaseFactory.instance = await createRxDatabase<DatabaseCollections>({
+      name: location,
+      storage: storage,
+    });
+    void await DatabaseFactory.instance.addCollections(
+      {
+        users: {
+          schema: userSchema,
+          methods: userMethods,
+          statics: userCollectionMethods
         }
-      )
-    }
+      }
+    )
   }
 
-  public static async init() {
+  public static async init(): Promise<RxDatabase<DatabaseCollections>> {
     if (!DatabaseFactory.instance) {
       await DatabaseFactory.createDatabase();
     }
-    return DatabaseFactory.instance;
+    return DatabaseFactory.instance as RxDatabase<DatabaseCollections>;
   }
 }
 
